@@ -1,7 +1,7 @@
 {
 	"Name": "Percentage Graph Mod",
 	"ID": "percentage graph mod",
-	"Author": "NewtonGR",
+	"Author": "akauangr",
 	"Description": "Shows income percentage graphs on the buildings.",
 	"ModVersion": 1,
 	"GameVersion": 2.042,

@@ -43,7 +43,7 @@ Game.registerMod("percentage graph mod", {
 	},
 	graphByPerc: function (perc) {
 		var graphNumber = 0;
-		var graphNumberList = [100, 90, 80, 75, 60, 50, 40, 30, 25, 20, 10, 5, 1];
+		var graphNumberList = [100, 90, 80, 75, 65, 60, 50, 40, 30, 25, 20, 10, 5, 1];
 		graphNumberList.forEach(n => {
 			if (perc <= n) {
 				graphNumber = n;
