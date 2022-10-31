@@ -1,21 +1,31 @@
 if (PercentageMod === undefined) var PercentageMod = {};
 PercentageMod.name = 'Percentage Graph Mod';
 PercentageMod.ID = 'percentage graph mod';
-PercentageMod.version = '3.0';
+PercentageMod.version = '3.2';
 PercentageMod.GameVersion = '2.048';
 
 PercentageMod.launch = function () {
 
 	PercentageMod.defaultConfig = function () {
 		return {
-			position: 'top-right',
 			show_synergy: 1,
 			swap_order: 0,
-			buttons: {
+			position: 'top-right',
+			positionBtns: {
 				'position_top_left': 0,
 				'position_top_right': 1,
 				'position_bottom_left': 0,
 				'position_bottom_right': 0,
+			},
+			brightness: 1,
+			brightnessBtns: {
+				'brightness_0': 0,
+				'brightness_1': 1,
+				'brightness_2': 0,
+				'brightness_3': 0,
+				'brightness_4': 0,
+				'brightness_5': 0,
+				'brightness_50': 0
 			}
 		}
 	}
@@ -48,45 +58,70 @@ PercentageMod.launch = function () {
 		Game.customStatsMenu.push(function () {
 			CCSE.AppendStatsVersionNumber(PercentageMod.name, PercentageMod.version);
 		});
+
+		var stylesheet = document.styleSheets[0];
+		stylesheet.insertRule(".percentageModColorListing > .smallFancyButton { width: auto !important}", 0);
 	}
 
 	PercentageMod.getMenuString = function () {
 		let m = CCSE.MenuHelper;
 		var str = '';
 
-		str += m.Header('Mod Position');
-		str += '' +
-			'<div class="listing">' +
-			m.ToggleButton(PercentageMod.config.buttons, 'position_top_left', 'PercentageMod_PositionTopLeft', 'Top left (selected)', 'Top left', "PercentageMod.ChangePosition") +
-			m.ToggleButton(PercentageMod.config.buttons, 'position_top_right', 'PercentageMod_PositionTopRight', 'Top right (selected)', 'Top right', "PercentageMod.ChangePosition") +
-			'</div>';
-		str += '' +
-			'<div class="listing">' +
-			m.ToggleButton(PercentageMod.config.buttons, 'position_bottom_left', 'PercentageMod_PositionBottomLeft', 'Bottom left (selected)', 'Bottom left', "PercentageMod.ChangePosition") +
-			m.ToggleButton(PercentageMod.config.buttons, 'position_bottom_right', 'PercentageMod_PositionBottomRight', 'Bottom right (selected)', 'Bottom right', "PercentageMod.ChangePosition") +
-			'</div>';
+		try {
+			str += m.Header('Mod Position');
+			str += '' +
+				'<div class="listing">' +
+				m.ToggleButton(PercentageMod.config.positionBtns, 'position_top_left', 'PercentageMod_PositionTopLeft', 'Top left (selected)', 'Top left', "PercentageMod.ChangePosition") +
+				m.ToggleButton(PercentageMod.config.positionBtns, 'position_top_right', 'PercentageMod_PositionTopRight', 'Top right (selected)', 'Top right', "PercentageMod.ChangePosition") +
+				'</div>';
+			str += '' +
+				'<div class="listing">' +
+				m.ToggleButton(PercentageMod.config.positionBtns, 'position_bottom_left', 'PercentageMod_PositionBottomLeft', 'Bottom left (selected)', 'Bottom left', "PercentageMod.ChangePosition") +
+				m.ToggleButton(PercentageMod.config.positionBtns, 'position_bottom_right', 'PercentageMod_PositionBottomRight', 'Bottom right (selected)', 'Bottom right', "PercentageMod.ChangePosition") +
+				'</div>';
 
-		str += '<br/>';
-		str += m.Header('Synergy');
-		str += '' +
-			'<div class="listing">' +
-			m.ToggleButton(PercentageMod.config, 'show_synergy', 'PercentageMod_Synergy', 'Show Synergy ON', 'Show Synergy OFF', "PercentageMod.Toggle") +
-			'</div>';
+			str += '<br/>';
+			str += m.Header('Synergy');
+			str += '' +
+				'<div class="listing">' +
+				m.ToggleButton(PercentageMod.config, 'show_synergy', 'PercentageMod_Synergy', 'Show Synergy ON', 'Show Synergy OFF', "PercentageMod.Toggle") +
+				'</div>';
 
-		str += '<br/>';
-		str += m.Header('Order');
-		str += '' +
-			'<div class="listing">' +
-			m.ToggleButton(PercentageMod.config, 'swap_order', 'PercentageMod_SwapOrder', 'Swap Graph Order ON', 'Swap Graph Order OFF', "PercentageMod.Toggle") +
-			'</div>';
+			str += '<br/>';
+			str += m.Header('Order');
+			str += '' +
+				'<div class="listing">' +
+				m.ToggleButton(PercentageMod.config, 'swap_order', 'PercentageMod_SwapOrder', 'Swap Graph Order ON', 'Swap Graph Order OFF', "PercentageMod.Toggle") +
+				'</div>';
 
+			str += '<br/>';
+			str += m.Header('Brightness');
+			str += '' +
+				'<div class="listing percentageModColorListing">' +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_0', 'PercentageMod_Brightness_0', 'Black', 'Black', "PercentageMod.ChangeBrightness") +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_1', 'PercentageMod_Brightness_1', 'Default', 'Default', "PercentageMod.ChangeBrightness") +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_2', 'PercentageMod_Brightness_2', 'Bright', 'Bright', "PercentageMod.ChangeBrightness") +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_3', 'PercentageMod_Brightness_3', 'Brighter', 'Brighter', "PercentageMod.ChangeBrightness") +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_4', 'PercentageMod_Brightness_4', 'Brighter+', 'Brighter+', "PercentageMod.ChangeBrightness") +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_5', 'PercentageMod_Brightness_5', 'Neon', 'Neon', "PercentageMod.ChangeBrightness") +
+				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_50', 'PercentageMod_Brightness_50', 'White', 'White', "PercentageMod.ChangeBrightness") +
+				'</div>';
 
-		str += '<br/>';
-		str += m.Header('Default');
-		str += '' +
-			'<div class="listing">' +
-			m.ActionButton("PercentageMod.restoreDefaultConfig(); PercentageMod.resetGraphs(); Game.UpdateMenu();", 'Restore Default Config') +
-			'</div>';
+			str += '<br/>';
+
+			str += m.Header('Default');
+			str += '' +
+				'<div class="listing">' +
+				m.ActionButton("PercentageMod.restoreDefaultConfig(); PercentageMod.resetGraphs(); Game.UpdateMenu();", 'Restore Default Config') +
+				'</div>';
+
+			str += '<br/>';
+
+		} catch (error) {
+			console.log(error);
+			PercentageMod.restoreDefaultConfig()
+			str = PercentageMod.getMenuString()
+		}
 
 		return str;
 	}
@@ -111,6 +146,20 @@ PercentageMod.launch = function () {
 		}
 	}
 
+	PercentageMod.ToggleInList = function (prefName, button, on, off, list, config) {
+		list.forEach((btn) => {
+			if (prefName == btn.pref) {
+				PercentageMod.config[config] = btn.name;
+				l(button).innerHTML = on;
+				PercentageMod.config[config + "Btns"][btn.pref] = 1;
+			} else {
+				l(button).innerHTML = off;
+				PercentageMod.config[config + "Btns"][btn.pref] = 0;
+			}
+		});
+		Game.UpdateMenu();
+	}
+
 	PercentageMod.ChangePosition = function (prefName, button, on, off, invert) {
 		var positions = [
 			{ pref: 'position_top_left', name: 'top-left' },
@@ -118,19 +167,21 @@ PercentageMod.launch = function () {
 			{ pref: 'position_bottom_left', name: 'bottom-left' },
 			{ pref: 'position_bottom_right', name: 'bottom-right' }
 		]
+		PercentageMod.ToggleInList(prefName, button, on, off, positions, 'position')
+		PercentageMod.resetGraphs();
+	}
 
-		positions.forEach((pos) => {
-			if (prefName == pos.pref) {
-				PercentageMod.config.position = pos.name;
-				l(button).innerHTML = on;
-				PercentageMod.config.buttons[pos.pref] = 1;
-			} else {
-				l(button).innerHTML = off;
-				PercentageMod.config.buttons[pos.pref] = 0;
-			}
-		});
-
-		Game.UpdateMenu();
+	PercentageMod.ChangeBrightness = function (prefName, button, on, off, invert) {
+		var brightnessBtns = [
+			{ pref: 'brightness_0', name: '0' },
+			{ pref: 'brightness_1', name: '1' },
+			{ pref: 'brightness_2', name: '2' },
+			{ pref: 'brightness_3', name: '3' },
+			{ pref: 'brightness_4', name: '4' },
+			{ pref: 'brightness_5', name: '5' },
+			{ pref: 'brightness_50', name: '50' }
+		]
+		PercentageMod.ToggleInList(prefName, button, on, off, brightnessBtns, "brightness")
 		PercentageMod.resetGraphs();
 	}
 
@@ -159,6 +210,14 @@ PercentageMod.launch = function () {
 			PercentageMod.restoreDefaultConfig();
 		}
 
+		var percentageContainer = '<span class="percentage" style="vertical-align: top;">0%</span>';
+
+		var graphContainer = '' +
+			'<span class="graph" ' +
+			'style="' +
+			'filter: brightness(' + (PercentageMod.config.brightness || 1) + ')' +
+			'"></span>';
+
 		var modDiv = '' +
 			'<div class="percentageMod" style="position: absolute;' +
 			(PercentageMod.config.position == 'top-left' ? 'top: 0px;left: 0px;' : '') +
@@ -166,9 +225,9 @@ PercentageMod.launch = function () {
 			(PercentageMod.config.position == 'bottom-left' ? 'bottom: 0px;left: 0px;' : '') +
 			(PercentageMod.config.position == 'bottom-right' ? 'bottom: 0px;right: 0px;' : '') +
 			'">' +
-			(PercentageMod.config.swap_order ? '<span class="graph"></span>' : '') +
-			'<span class="percentage" style="vertical-align: top;">0%</span>' +
-			(PercentageMod.config.swap_order ? '' : '<span class="graph"></span>') +
+			(PercentageMod.config.swap_order ? graphContainer : '') +
+			percentageContainer +
+			(PercentageMod.config.swap_order ? '' : graphContainer) +
 			'</div>';
 
 		Game.ObjectsById.forEach(obj => {
@@ -195,9 +254,6 @@ PercentageMod.launch = function () {
 		Game.ObjectsById.forEach(obj => {
 			var perc = PercentageMod.getTotalPercentage(obj);
 			var percSynergy = PercentageMod.getSynergyPercentage(obj);
-
-			console.log("percSynergy", percSynergy, obj);
-
 			var percDiv = obj.l.getElementsByClassName("content")[0].getElementsByClassName("percentage")[0];
 			var graphDiv = obj.l.getElementsByClassName("content")[0].getElementsByClassName("graph")[0];
 

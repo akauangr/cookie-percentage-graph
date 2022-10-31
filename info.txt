@@ -3,7 +3,7 @@
  "ID": "percentage graph mod local",
  "Author": "NewtonGR",
  "Description": "Shows income percentage graphs on the buildings.",
- "ModVersion": "3.0",
+ "ModVersion": "3.2",
  "GameVersion": 2.048,
  "Date": "16/10/2021",
  "Dependencies": [
