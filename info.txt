@@ -1,13 +1,15 @@
 {
  "Name": "Percentage Graph Mod",
  "ID": "percentage graph mod",
- "Author": "akauangr",
+ "Author": "NewtonGR",
  "Description": "Shows income percentage graphs on the buildings.",
- "ModVersion": 1,
- "GameVersion": 2.042,
+ "ModVersion": "3.0",
+ "GameVersion": 2.048,
  "Date": "16/10/2021",
- "Dependencies": [],
- "Disabled": 1,
+ "Dependencies": [
+  "CCSE"
+ ],
+ "Disabled": 0,
  "AllowSteamAchievs": 1,
  "Workshop": "2686203614"
 }
