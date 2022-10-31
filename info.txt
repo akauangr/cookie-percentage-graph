@@ -1,6 +1,6 @@
 {
- "Name": "Percentage Graph Mod",
- "ID": "percentage graph mod",
+ "Name": "Percentage Graph Mod Local",
+ "ID": "percentage graph mod local",
  "Author": "NewtonGR",
  "Description": "Shows income percentage graphs on the buildings.",
  "ModVersion": "3.0",

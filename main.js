@@ -195,12 +195,18 @@ PercentageMod.launch = function () {
 		Game.ObjectsById.forEach(obj => {
 			var perc = PercentageMod.getTotalPercentage(obj);
 			var percSynergy = PercentageMod.getSynergyPercentage(obj);
+
+			console.log("percSynergy", percSynergy, obj);
+
 			var percDiv = obj.l.getElementsByClassName("content")[0].getElementsByClassName("percentage")[0];
 			var graphDiv = obj.l.getElementsByClassName("content")[0].getElementsByClassName("graph")[0];
 
+			var cpsStr = Beautify(perc, 1);
+			var synergyStr = Beautify(percSynergy, 1);
+
 			percDiv.innerHTML = '<b>' +
-				Beautify(perc, 1) + '% ' + (perc > 0 ? '<span style="font-size: smaller">' +
-					(PercentageMod.config.show_synergy ? '(+' + Beautify(percSynergy, 1) + '%)' : '') +
+				cpsStr + '% ' + (perc > 0 ? '<span style="font-size: smaller">' +
+					(PercentageMod.config.show_synergy ? '(+' + synergyStr + '%)' : '') +
 					'</span></b>' : '');
 			graphDiv.innerHTML = PercentageMod.graphByPerc(perc);
 		});
@@ -213,18 +219,18 @@ PercentageMod.launch = function () {
 
 	PercentageMod.getSynergyPercentage = function (me) {
 		if (me.amount > 0) {
-			var synergyesWith = {};
+			var synergiesWith = {};
 			var synergyBoost = 0;
 
 			if (me.name == 'Grandma') {
-				for (var i in Game.GrandmaSynergyes) {
-					if (Game.Has(Game.GrandmaSynergyes[i])) {
-						var other = Game.Upgrades[Game.GrandmaSynergyes[i]].buildingTie;
+				for (var i in Game.GrandmaSynergies) {
+					if (Game.Has(Game.GrandmaSynergies[i])) {
+						var other = Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
 						var mult = me.amount * 0.01 * (1 / (other.id - 1));
 						var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + mult);
 						synergyBoost += boost;
-						if (!synergyesWith[other.plural]) synergyesWith[other.plural] = 0;
-						synergyesWith[other.plural] += mult;
+						if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
+						synergiesWith[other.plural] += mult;
 					}
 				}
 			}
@@ -232,20 +238,20 @@ PercentageMod.launch = function () {
 				var other = Game.Objects['Grandma'];
 				var boost = (me.amount * 0.05 * other.amount) * Game.globalCpsMult;
 				synergyBoost += boost;
-				if (!synergyesWith[other.plural]) synergyesWith[other.plural] = 0;
-				synergyesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
+				if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
+				synergiesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
 			}
 
-			for (var i in me.synergyes) {
-				var it = me.synergyes[i];
+			for (var i in me.synergies) {
+				var it = me.synergies[i];
 				if (Game.Has(it.name)) {
 					var weight = 0.05;
 					var other = it.buildingTie1;
 					if (me == it.buildingTie1) { weight = 0.001; other = it.buildingTie2; }
 					var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + me.amount * weight);
 					synergyBoost += boost;
-					if (!synergyesWith[other.plural]) synergyesWith[other.plural] = 0;
-					synergyesWith[other.plural] += me.amount * weight;
+					if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
+					synergiesWith[other.plural] += me.amount * weight;
 				}
 			}
 		}
