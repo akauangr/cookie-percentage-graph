@@ -1,8 +1,8 @@
 if (PercentageMod === undefined) var PercentageMod = {};
 PercentageMod.name = 'Percentage Graph Mod';
 PercentageMod.ID = 'percentage graph mod';
-PercentageMod.version = '3.2';
-PercentageMod.GameVersion = '2.048';
+PercentageMod.version = '4.0';
+PercentageMod.GameVersion = '2.052';
 
 PercentageMod.launch = function () {
 
@@ -315,21 +315,15 @@ PercentageMod.launch = function () {
 	}
 
 	PercentageMod.graphByPerc = function (perc) {
-		var graphNumber = 0;
-		var graphNumberList = [100, 90, 80, 75, 65, 60, 50, 40, 30, 25, 20, 10, 5, 1];
-		graphNumberList.forEach(n => {
-			if (perc <= n) {
-				graphNumber = n;
-			}
-		});
-
-		return "<img src='" + PercentageMod.dir + "/graph/" + graphNumber + ".png' />"
-
-		// if (Game.dir) {
-		// 	return "<img src='../graph/" + graphNumber + ".png' />"
-		// } else {
-		// 	return "";
-		// }
+		return "<div style='" +
+			"margin: 0px 2px;" +
+			"display: inline-block;" +
+			"width: 14px;" +
+			"height: 14px;" +
+			"border-radius: 50%;" +
+			"border: 1px solid #05658E;" +
+			"background-image: conic-gradient(from 0deg at 50% 50%, #083959  0%, #083959 " + perc + "%, #00000000 " + (perc + 0.1) + "%)" +
+			"'></div>"
 	}
 
 
