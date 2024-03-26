@@ -1,3 +1,6 @@
+
+[DEPRECATED] Use steam workshop instead
+
 # Percentage Graph Mod
 ## A mod for Cookie Clicker
 
