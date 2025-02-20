@@ -1,11 +1,11 @@
 {
- "Name": "Percentage Graph Mod Local",
- "ID": "percentage graph mod local",
+ "Name": "Percentage Graph Mod",
+ "ID": "percentage graph mod",
  "Author": "NewtonGR",
  "Description": "Shows income percentage graphs on the buildings.",
- "ModVersion": "4.0",
- "GameVersion": 2.052,
- "Date": "16/10/2021",
+ "ModVersion": "5.1",
+ "GameVersion": 2.053,
+ "Date": "01/12/2021",
  "Dependencies": [
   "CCSE"
  ],

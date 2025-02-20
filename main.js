@@ -8,6 +8,7 @@ PercentageMod.launch = function () {
 
 	PercentageMod.defaultConfig = function () {
 		return {
+			show_graph: 1,
 			show_synergy: 1,
 			swap_order: 0,
 			position: 'top-right',
@@ -26,6 +27,19 @@ PercentageMod.launch = function () {
 				'brightness_4': 0,
 				'brightness_5': 0,
 				'brightness_50': 0
+			},
+			fontSize: 13,
+			fontSizeBtns: {
+				'fontSize_0': 0,
+				'fontSize_1': 0,
+				'fontSize_2': 1,
+				'fontSize_3': 0,
+				'fontSize_4': 0,
+			},
+			color: {
+				'r': 0,
+				'g': 0,
+				'b': 0
 			}
 		}
 	}
@@ -61,6 +75,7 @@ PercentageMod.launch = function () {
 
 		var stylesheet = document.styleSheets[0];
 		stylesheet.insertRule(".percentageModColorListing > .smallFancyButton { width: auto !important}", 0);
+		stylesheet.insertRule(".percentageModFontSizeListing > .smallFancyButton { width: auto !important}", 0);
 	}
 
 	PercentageMod.getMenuString = function () {
@@ -78,6 +93,13 @@ PercentageMod.launch = function () {
 				'<div class="listing">' +
 				m.ToggleButton(PercentageMod.config.positionBtns, 'position_bottom_left', 'PercentageMod_PositionBottomLeft', 'Bottom left (selected)', 'Bottom left', "PercentageMod.ChangePosition") +
 				m.ToggleButton(PercentageMod.config.positionBtns, 'position_bottom_right', 'PercentageMod_PositionBottomRight', 'Bottom right (selected)', 'Bottom right', "PercentageMod.ChangePosition") +
+				'</div>';
+
+			str += '<br/>';
+			str += m.Header('Graph');
+			str += '' +
+				'<div class="listing">' +
+				m.ToggleButton(PercentageMod.config, 'show_graph', 'PercentageMod_Graph', 'Show Graph ON', 'Show Graph OFF', "PercentageMod.Toggle") +
 				'</div>';
 
 			str += '<br/>';
@@ -105,6 +127,17 @@ PercentageMod.launch = function () {
 				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_4', 'PercentageMod_Brightness_4', 'Brighter+', 'Brighter+', "PercentageMod.ChangeBrightness") +
 				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_5', 'PercentageMod_Brightness_5', 'Neon', 'Neon', "PercentageMod.ChangeBrightness") +
 				m.ToggleButton(PercentageMod.config.brightnessBtns, 'brightness_50', 'PercentageMod_Brightness_50', 'White', 'White', "PercentageMod.ChangeBrightness") +
+				'</div>';
+
+			str += '<br/>';
+			str += m.Header('Font Size');
+			str += '' +
+				'<div class="listing percentageModFontSizeListing">' +
+				m.ToggleButton(PercentageMod.config.fontSizeBtns, 'fontSize_0', 'PercentageMod_FontSize_0', 'XSmall', 'XSmall', "PercentageMod.ChangeFontSize") +
+				m.ToggleButton(PercentageMod.config.fontSizeBtns, 'fontSize_1', 'PercentageMod_FontSize_1', 'Small', 'Small', "PercentageMod.ChangeFontSize") +
+				m.ToggleButton(PercentageMod.config.fontSizeBtns, 'fontSize_2', 'PercentageMod_FontSize_2', 'Default', 'Default', "PercentageMod.ChangeFontSize") +
+				m.ToggleButton(PercentageMod.config.fontSizeBtns, 'fontSize_3', 'PercentageMod_FontSize_3', 'Big', 'Big', "PercentageMod.ChangeFontSize") +
+				m.ToggleButton(PercentageMod.config.fontSizeBtns, 'fontSize_4', 'PercentageMod_FontSize_4', 'Bigger', 'Bigger', "PercentageMod.ChangeFontSize") +
 				'</div>';
 
 			str += '<br/>';
@@ -138,6 +171,7 @@ PercentageMod.launch = function () {
 		l(button).className = 'smallFancyButton prefButton option' + ((PercentageMod.config[prefName] ^ invert) ? '' : ' off');
 
 		var resetGraphButtons = [
+			'show_graph',
 			'swap_order'
 		];
 
@@ -185,6 +219,18 @@ PercentageMod.launch = function () {
 		PercentageMod.resetGraphs();
 	}
 
+	PercentageMod.ChangeFontSize = function (prefName, button, on, off, invert) {
+		var fontSizeBtns = [
+			{ pref: 'fontSize_0', name: '8' },
+			{ pref: 'fontSize_1', name: '10' },
+			{ pref: 'fontSize_2', name: '13' },
+			{ pref: 'fontSize_3', name: '15' },
+			{ pref: 'fontSize_4', name: '20' }
+		]
+		PercentageMod.ToggleInList(prefName, button, on, off, fontSizeBtns, "fontSize")
+		PercentageMod.resetGraphs();
+	}
+
 
 	PercentageMod.save = function () {
 		return JSON.stringify(PercentageMod.config);
@@ -219,7 +265,7 @@ PercentageMod.launch = function () {
 			'"></span>';
 
 		var modDiv = '' +
-			'<div class="percentageMod" style="position: absolute;' +
+			'<div class="percentageMod" style="position: absolute; font-size: ' + PercentageMod.config.fontSize + 'px;' +
 			(PercentageMod.config.position == 'top-left' ? 'top: 0px;left: 0px;' : '') +
 			(PercentageMod.config.position == 'top-right' ? 'top: 0px;right: 0px;' : '') +
 			(PercentageMod.config.position == 'bottom-left' ? 'bottom: 0px;left: 0px;' : '') +
@@ -227,8 +273,8 @@ PercentageMod.launch = function () {
 			'">' +
 			(PercentageMod.config.swap_order ? graphContainer : '') +
 			percentageContainer +
-			(PercentageMod.config.swap_order ? '' : graphContainer) +
-			'</div>';
+			(PercentageMod.config.swap_order ? '' : graphContainer)
+		'</div>';
 
 		Game.ObjectsById.forEach(obj => {
 			obj
@@ -264,7 +310,8 @@ PercentageMod.launch = function () {
 				cpsStr + '% ' + (perc > 0 ? '<span style="font-size: smaller">' +
 					(PercentageMod.config.show_synergy ? '(+' + synergyStr + '%)' : '') +
 					'</span></b>' : '');
-			graphDiv.innerHTML = PercentageMod.graphByPerc(perc);
+
+			graphDiv.innerHTML = PercentageMod.config.show_graph ? PercentageMod.graphByPerc(perc) : '';
 		});
 	}
 
